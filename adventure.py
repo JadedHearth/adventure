@@ -9,9 +9,12 @@ class Building(object):
         self.shop = shop
 
 # some converting functions
-def strtolst(string):
+def invstrtolst(string):
     instr = list(string.split(" "))
-    return instr
+    outstr = []
+    for number in instr:
+        outstr.append(int(number))
+    return outstr
 
 def lsttostr(list):
     inlist = ' '.join([str(entry) for entry in list])
@@ -25,7 +28,7 @@ towndes = { # To reference town names
     5: "Lunenburg, a town with a huge fish processing industry.",
     6: "Wolfville, a bustling town with a thriving tourist industry, with the wine industry and the history being large attractions.",
     7: "Annapolis Royal, a village with a strong tourist, ship renovation and scallop industry.",
-    8: "Truro, a large historic town which is an gateway to the outside world.",
+    8: "Truro, a large historic town which serves as an gateway to the outside world.",
     9: "Port Dufferin, a tiny village with very little industry.",
     10: "New Glasgow, a city with a fairly big manufacturing industry, along with the corporate headquarters of Savy's.",
     11: "Port Hawkesbury, a town with a big shipping industry, along with a large paper manufacturing industry.",
@@ -175,7 +178,7 @@ elif ifsave == True: # Loading save
         d = int(savefile.readline())
         money = int(savefile.readline())
         location = int(savefile.readline())
-        inventory = strtolst(savefile.readline())
+        inventory = invstrtolst(savefile.readline())
         savefile.close()
     except:
         print("Error - check that save file exists, or if it is incorrectly formatted.")
@@ -241,12 +244,12 @@ while True: # All game commands
     if cmd == "inv" or cmd == "inventory" or cmd == "items": # displays inventory
         for item in inventory:
             print(items[item])
-    if cmd == "help" or cmd == "aaaaaa" or cmd == "arghhhhhhh": # shows a list of what the commands do
+    if cmd == "help" or cmd == "aaaaa" or cmd == "arghhhhhhh": # shows a list of what the commands do
         print("Commands: (note - subject to change)")
-        print("'move'     - lets you move from one town to another.")
-        print("'location' - tells you your current location.")
-        print("'save'     - saves your game.")
-        print("'balance'  - tells you how much money you have.")
-        print("'beg'      - gives you $10.")
-        print("'pick'     - gives you a banana.")
-        print("'inventory'- displays your inventory.")
+        print("'move'      - lets you move from one town to another.")
+        print("'location'  - tells you your current location.")
+        print("'save'      - saves your game.")
+        print("'balance'   - tells you how much money you have.")
+        print("'beg'       - gives you $10.")
+        print("'pick'      - gives you a banana.")
+        print("'inventory' - displays your inventory.")
