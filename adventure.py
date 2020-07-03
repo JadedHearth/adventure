@@ -1,27 +1,30 @@
-# By Maxim Zmudzinski
+#!/usr/bin/env python
 
-import random
+# By Maxim Zmudzinski
+import random, pickle
 from time import sleep
 
-class Building(object):
-    def __init__(self, type, shop):
-        self.type = type
+class Building(): # Building class to store info on a building
+    def __init__(self, type, location, shop):
+        self.typeid = type
+        self.location = location
         self.shop = shop
+        self.uniqueid = location*100 + typeid
 
-#def buildingid():
-    #i = 2
+def buildingfunc(buildingclassobj):
 
-# some converting functions
-def invstrtolst(string):
-    instr = list(string.split(" "))
-    outstr = []
-    for number in instr:
-        outstr.append(int(number))
-    return outstr
+    if buildingclassobj.shop == None: # Story types
+        try:
+            cdialog = customdialog[buildingclassobj.uniqueid]
+            exists = True
+        except:
+            exists = False
+        if exists == True:
+            print(cdialog[random(1, len(cdialog))])
+        else:
+            rdialog = regulardialog[buildingclassobj.typeid]
+            print(rdialog[random(1, len(rdialog))])
 
-def lsttostr(list):
-    inlist = ' '.join([str(entry) for entry in list])
-    return inlist
 
 towndes = { # To reference town names
     1: "Halifax, a metropolis with many thriving industries, giving it a lot of power over the surrounding areas.",
@@ -53,13 +56,19 @@ townbuildings = { # What buildings there are in each town
     12: [1, 2, 7, 8, 12, 13, 14],
     13: [2, 8, 14, 15],
 }
+regulardialog = {
+
+}
+customdialog = {
+    815: ["Mexican Dude: Hola!", "A guy with a monocle: Have you ever gone hunting? It's quite a thrill!"],
+}
 buildingtypes = { # To reference building types
     1: "Savy General Store", # Shop
     2: "Inn", # Shop
     3: "Blacksmith", # Shop
     4: "Bus Stop", # Shop
     5: "Train Station", # Shop
-    6: "Government Building",
+    6: "Government Building", # Story
     7: "Golf Course", # Job
     8: "Fishery", # Job
     9: "Port", # Job
@@ -71,8 +80,26 @@ buildingtypes = { # To reference building types
     15: "Mueseum", # Story
     16: "Savy Headquarters", # Job
 }
+buildingfunctype = { # What type of function each building should have - True is shop, False is job, None is story (dialog)
+    1: True,
+    2: True,
+    3: True,
+    4: True,
+    5: True,
+    6: None,
+    7: False,
+    8: False,
+    9: False,
+    10: False,
+    11: False,
+    12: None,
+    13: True,
+    14: None,
+    15: None,
+    16: False,
+}
 buildingdesc = { # TODO: To reference building desc
-    1: "Savy General Store",
+    1: "Savy General Store, a multiprovincial grocery chain.",
     2: "Inn",
     3: "Blacksmith",
     4: "Bus Stop",
@@ -135,7 +162,7 @@ neighbors = { # Reference to what towns are next to which
     13: [2, 12],
 }
 items = {
-    1: "Dagger",
+    1: "Pocket Knife",
     2: "Banana",
 }
 
@@ -194,19 +221,19 @@ if ifsave == False: # Creating a new game
         print("havent done this yet") # TODO: interactive tutorial?
     print("Welcome to "+towndes[d]) # Initial town message
     if money == 0:
-        print("You are an aspiring adventurer, itching to get out of town. You only have the clothes on your back and a dagger to your name.")
+        print("You are an aspiring adventurer, itching to get out of town. You only have the clothes on your back and a pocket knife to your name.")
     else:
-        print("You are an aspiring adventurer, itching to get out of town. You only have "+str(money)+" dollars, the clothes on your back, and a dagger to your name.")
+        print("You are an aspiring adventurer, itching to get out of town. You only have "+str(money)+" dollars, the clothes on your back, and a pocket knife to your name.")
 
 
 elif ifsave == True: # Loading save
     try:
-        savefile = open("saves/savefile.txt", "r")
-        d = int(savefile.readline())
-        money = int(savefile.readline())
-        location = int(savefile.readline())
-        inventory = invstrtolst(savefile.readline())
-        inside = int(savefile.readline())
+        savefile = open("saves/savefile.dat", "rb")
+        d = pickle.load(savefile)
+        money = pickle.load(savefile)
+        location = pickle.load(savefile)
+        inventory = pickle.load(savefile)
+        inside = pickle.load(savefile)
         savefile.close()
     except:
         print("Error - check that save file exists, or if it is incorrectly formatted.")
@@ -228,7 +255,7 @@ while True: # All game commands
                     location = townnames[cmd]
                     inside = 14
                     moved = True
-            if moved == None:
+            if moved == False:
                 print("Not a town name. Please copy the name exactly.")
         print("Welcome to "+towndes[location])
     if cmd == "location": # Returns location
@@ -243,7 +270,8 @@ while True: # All game commands
                 left = True
                 exit()
             elif cmd == "no" or cmd == "No" or cmd == "No." or cmd == "NO" or cmd == "n" or cmd == "N":
-                left = False
+                left = None
+                print("Leaving cancelled.")
             else:
                 print("Error, unable to interpert answer. Please try again.")
     if cmd == "save": # Saves game
@@ -252,14 +280,18 @@ while True: # All game commands
         while saved == False:
             cmd = input()
             if cmd == "yes" or cmd == "Yes" or cmd == "Yes." or cmd == "YES" or cmd == "y" or cmd == "Y":
-                savefile = open("saves/savefile.txt", "w")
-                savefile.write(str(d)+"\n"+str(money)+"\n"+str(location)+"\n"+lsttostr(inventory)+"\n"+str(inside))
+                savefile = open("saves/savefile.dat", "wb")
+                pickle.dump(d, savefile)
+                pickle.dump(money, savefile)
+                pickle.dump(location, savefile)
+                pickle.dump(inventory, savefile)
+                pickle.dump(inside, savefile)
                 savefile.close()
                 print("Game saved.")
                 saved = True
             elif cmd == "no" or cmd == "No" or cmd == "No." or cmd == "NO" or cmd == "n" or cmd == "N":
                 print("Save cancelled.")
-                saved = False
+                saved = None
             else:
                 print("Unable to interpert answer. Please try again.")
 
@@ -290,11 +322,12 @@ while True: # All game commands
             if moved == False:
                 print("Not a building name. Please copy it exactly.")
     if cmd == "search" or cmd == "look":
-        print("interior")
+        buildingis = Building(inside, location, buildingfunctype[inside])
     if cmd == "help" or cmd == "aaaaa" or cmd == "arghhhhhhh": # shows a list of what the commands do
         print("Commands: (note - subject to change)")
         print("'move'      - lets you move from one town to another.")
         print("'location'  - tells you your current location.")
+        print("'visit'     - lets you move to a building")
         print("'save'      - saves your game.")
         print("'balance'   - tells you how much money you have.")
         print("'beg'       - gives you $10.")
