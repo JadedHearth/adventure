@@ -93,7 +93,7 @@ buildingdesc = { # To reference building descriptions
     15: "Mueseum, which has a sparse distribution of people looking at various paintings and sculptures.",
     16: "Savy's Headquarters. You look up at the cold building and shiver with intimidation. They seem to be hiring though.",
 }
-townids = { # To reference town names
+townnames = { # To reference town names
     1: "Halifax",
     2: "Sydney",
     3: "Sandford",
@@ -108,7 +108,7 @@ townids = { # To reference town names
     12: "Inverness",
     13: "Dingwall",
 }
-townnames = { # To reference town ids
+townids = { # To reference town ids
     "Halifax": 1,
     "Sydney": 2,
     "Sandford": 3,

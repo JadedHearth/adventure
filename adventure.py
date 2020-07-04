@@ -13,6 +13,16 @@ class Building(): # Building class to store info on a building
         self.shop = shop
         self.uniqueid = location*100 + type # allows for custom dialog
 
+def save(d, money, location, inventory, inside):
+    savefile = open("saves/savefile.dat", "wb")
+    pickle.dump(d, savefile)
+    pickle.dump(money, savefile)
+    pickle.dump(location, savefile)
+    pickle.dump(inventory, savefile)
+    pickle.dump(inside, savefile)
+    savefile.close()
+    print("Game saved.")
+
 def buildingfunc(buildingclassobj):
     if buildingclassobj.shop == True: # Shops
         global money
@@ -31,6 +41,7 @@ def buildingfunc(buildingclassobj):
                     money = money - price[sell]
                     inventory.append(sell)
                     item = True
+                    print("You bought the "+items[sell]+".")
                 elif cmd == items[sell] and money - price[sell] <= 0:
                     item = False
             if cmd == "cancel":
@@ -57,9 +68,9 @@ def buildingfunc(buildingclassobj):
             print(rdialog)
 
 #           Beginning of main code
-#                      |
-#                      |
-#                      V
+#                    |
+#                    |
+#                    V
 
 print("\nWelcome to 'Adventure' by Maxim Zmudzinski.") # TODO: Extend description?
 
@@ -101,6 +112,7 @@ if ifsave == False: # Creating a new game
     location = d
     inventory = [1]
     inside = 14
+    save(d, money, location, inventory, inside)
 
     print("Would you like to do the tutorial?") # Tutorial query
     tut = None
@@ -120,7 +132,6 @@ if ifsave == False: # Creating a new game
     else:
         print("You are an aspiring adventurer, itching to get out of town. You only have "+str(money)+" dollars, the clothes on your back, and a pocket knife to your name.")
 
-
 elif ifsave == True: # Loading save
     try:
         savefile = open("saves/savefile.dat", "rb")
@@ -138,26 +149,28 @@ print("Enter your commands below.")
 while True: # All game commands
     cmd = input()
     if cmd == "move": # Moving from town to town
-        print("What town would you like to move to? (Please copy the town name exactly)")
+        print("What town would you like to move to? (select either by spelling out the town name or writing what number in the list it is.)")
         directions = neighbors[location]
         for locations in directions:
-            print(townids[locations])
+            print(townnames[locations])
         moved = False
         while moved == False:
             cmd = input()
+            number = 0
             for locations in directions:
-                if cmd == townids[locations]:
-                    location = townnames[cmd]
+                number = number+1
+                if cmd == townnames[locations] or cmd == str(number):
+                    location = locations
                     inside = 14
                     moved = True
             if moved == False:
                 print("Not a town name. Please copy the name exactly.")
         print("Welcome to "+towndes[location])
-    if cmd == "location": # Returns location
+    elif cmd == "location": # Returns location
         print("You are in "+towndes[location])
         print("You are standing in the "+buildingdesc[inside])
-    if cmd == "exit" or cmd == "leave": # Stops the script
-        print("Are you sure you want to leave the game? You will lose all your unsaved progress!")
+    elif cmd == "exit" or cmd == "leave": # Stops the script
+        print("Are you sure you want to leave the game? You will lose unsaved progress!")
         left = False
         while left == False:
             cmd = input()
@@ -169,20 +182,13 @@ while True: # All game commands
                 print("Leaving cancelled.")
             else:
                 print("Error, unable to interpert answer. Please try again.")
-    if cmd == "save": # Saves game
+    elif cmd == "save": # Saves game
         saved = False
         print("Are you sure you want to save? Any previous game will be overwritten!")
         while saved == False:
             cmd = input()
             if cmd == "yes" or cmd == "Yes" or cmd == "Yes." or cmd == "YES" or cmd == "y" or cmd == "Y":
-                savefile = open("saves/savefile.dat", "wb")
-                pickle.dump(d, savefile)
-                pickle.dump(money, savefile)
-                pickle.dump(location, savefile)
-                pickle.dump(inventory, savefile)
-                pickle.dump(inside, savefile)
-                savefile.close()
-                print("Game saved.")
+                save(d, money, location, inventory, inside)
                 saved = True
             elif cmd == "no" or cmd == "No" or cmd == "No." or cmd == "NO" or cmd == "n" or cmd == "N":
                 print("Save cancelled.")
@@ -190,46 +196,57 @@ while True: # All game commands
             else:
                 print("Unable to interpert answer. Please try again.")
 
-    if cmd == "balance" or cmd == "bal": # Shows balance
+    elif cmd == "balance" or cmd == "bal": # Shows balance
         print("You have $"+str(money)+".")
-    if cmd == "beg": # gives money
+    elif cmd == "beg": # gives money
         money = money + 10
         print("Someone gave you $10.")
-    if cmd == "pick": # gives a banana
+    elif cmd == "pick": # gives a banana
         inventory.append(2)
         print("Ok you have picked a banana from... somewhere?")
-    if cmd == "inv" or cmd == "inventory" or cmd == "items": # displays inventory
+    elif cmd == "inv" or cmd == "inventory" or cmd == "items": # displays inventory
         for item in inventory:
             print(items[item])
-    if cmd == "go" or cmd == "goto" or cmd == "visit":
-        print("Which building would you like to visit? (Please copy the town name exactly.)")
+    elif cmd == "go" or cmd == "goto" or cmd == "visit":
+        print("Which building would you like to visit? (Please copy the town name exactly or write the number in the list it is.)")
         buildings = townbuildings[location]
         for building in buildings:
             if building != 14:
                 print(buildingtypes[building])
         moved = False
+        number = 0
         while moved == False:
             cmd = input()
             for building in buildings:
-                if cmd == buildingtypes[building] and building != 14:
+                number = number + 1
+                if cmd == buildingtypes[building] or cmd == str(number) and building != 14:
                     inside = building
                     moved = True
                     print("You have gone to the "+buildingdesc[building])
+                if cmd == "cancel":
+                    moved = None
+                    print("Visit cancelled.")
             if moved == False:
                 print("Not a building name. Please copy it exactly.")
-    if cmd == "search" or cmd == "look" or cmd == "chat" or cmd == "talk":
+    elif cmd == "search" or cmd == "look" or cmd == "chat" or cmd == "talk":
         if buildingfunctype[inside] == None and inside != 14:
             buildingis = Building(inside, location, buildingfunctype[inside])
             buildingfunc(buildingis)
         else:
             print("The building you are in does not let you chat.")
-    if cmd == "work":
-        buildingis = Building(inside, location, buildingfunctype[inside])
-        buildingfunc(buildingis)
-    if cmd == "shop":
-        buildingis = Building(inside, location, buildingfunctype[inside])
-        buildingfunc(buildingis)
-    if cmd == "help" or cmd == "aaaaa" or cmd == "arghhhhhhh": # shows a list of what the commands do
+    elif cmd == "work":
+        if buildingfunctype[inside] == False and inside != 14:
+            buildingis = Building(inside, location, buildingfunctype[inside])
+            buildingfunc(buildingis)
+        else:
+            print("The building you are in does not let you work.")
+    elif cmd == "shop":
+        if buildingfunctype[inside] == True and inside != 14:
+            buildingis = Building(inside, location, buildingfunctype[inside])
+            buildingfunc(buildingis)
+        else:
+            print("The building you are in does not let you shop.")
+    elif cmd == "help" or cmd == "commands" or cmd == "aaaaa" or cmd == "arghhhhhhh": # shows a list of what the commands do
         print("Commands: (note - subject to (constant) change)")
         print("'move'      - lets you move from one town to another.")
         print("'location'  - tells you your current location.")
@@ -241,3 +258,5 @@ while True: # All game commands
         print("'beg'       - gives you $10.")
         print("'pick'      - gives you a banana.")
         print("'inventory' - displays your inventory.")
+    else:
+        print("Not a command. (run 'help' for a list of commands)")
