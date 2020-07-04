@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
-# By Maxim Zmudzinski
+# "adventue", a game made by Maxim Zmudzinski
+
 import random, pickle
+from dics import *
 from time import sleep
 
 class Building(): # Building class to store info on a building
@@ -9,162 +11,55 @@ class Building(): # Building class to store info on a building
         self.typeid = type
         self.location = location
         self.shop = shop
-        self.uniqueid = location*100 + typeid
+        self.uniqueid = location*100 + type # allows for custom dialog
 
 def buildingfunc(buildingclassobj):
+    if buildingclassobj.shop == True: # Shops
+        global money
+        rdialog = regulardialog[buildingclassobj.typeid]
+        print(rdialog)
+        shopping = shopitems[buildingclassobj.typeid]
+        print("Options:")
+        for sell in shopping:
+            price = prices[buildingclassobj.typeid]
+            print(items[sell]+", $"+str(price[sell]))
+        item = None
+        while item == None:
+            cmd = input()
+            for sell in shopping:
+                if cmd == items[sell] and money - price[sell] >= 0:
+                    money = money - price[sell]
+                    inventory.append(sell)
+                    item = True
+                elif cmd == items[sell] and money - price[sell] <= 0:
+                    item = False
+            if cmd == "cancel":
+                print("Purchase cancelled.")
+                item = -1
+            if item == None:
+                print("That is not an item. Please copy the name exactly.")
+            elif: item == False:
+                print("You do not have enough money to afford that item.")
 
-    if buildingclassobj.shop == None: # Story types
+    if buildingclassobj.shop == False: # TODO: Jobs
+        print("Jobs have not been implemented yet. Please come back later.")
+
+    if buildingclassobj.shop == None: # Story dialog
         try:
             cdialog = customdialog[buildingclassobj.uniqueid]
             exists = True
         except:
             exists = False
         if exists == True:
-            print(cdialog[random(1, len(cdialog))])
+            print(cdialog[random.randint(0, len(cdialog)-1)])
         else:
             rdialog = regulardialog[buildingclassobj.typeid]
-            print(rdialog[random(1, len(rdialog))])
+            print(rdialog)
 
-
-towndes = { # To reference town names
-    1: "Halifax, a metropolis with many thriving industries, giving it a lot of power over the surrounding areas.",
-    2: "Sydney, a city with a lot of emphasis on its industrial sectors.",
-    3: "Sandford, a village with fishing as the main revenue source.",
-    4: "Clark's Harbor, a village with lobster fishing being the livelihood of most of the people there.",
-    5: "Lunenburg, a town with a huge fish processing industry.",
-    6: "Wolfville, a bustling town with a thriving tourist industry, with the wine industry and the history being large attractions.",
-    7: "Annapolis Royal, a village with a strong tourist, ship renovation and scallop industry.",
-    8: "Truro, a large, historic town which serves as an gateway to the outside world.",
-    9: "Port Dufferin, a tiny village with very little industry.",
-    10: "New Glasgow, a city with a fairly big manufacturing industry, along with the corporate headquarters of Savy.",
-    11: "Port Hawkesbury, a town with a big shipping industry, along with a large paper manufacturing industry.",
-    12: "Inverness, a small town that once had a small coal mining industry, but now has a tourisim industry based on two popular golf courses.",
-    13: "Dingwall, a village that has a small fishing industry, along with a minor tourist industry.",
-}
-townbuildings = { # What buildings there are in each town
-    1: [1, 2, 3, 4, 5, 6, 9, 13, 14, 15],
-    2: [1, 2, 3, 5, 8, 9, 10, 14],
-    3: [2, 8, 14],
-    4: [4, 8, 9, 14],
-    5: [1, 2, 4, 8, 11, 14],
-    6: [1, 2, 4, 13, 14, 15],
-    7: [1, 2, 3, 4, 8, 9, 14, 15],
-    8: [1, 2, 5, 6, 9, 13, 14, 15],
-    9: [8, 14],
-    10: [1, 2, 5, 6, 9, 10, 14, 16],
-    11: [1, 2, 3, 5, 9, 10, 14],
-    12: [1, 2, 7, 8, 12, 13, 14],
-    13: [2, 8, 14, 15],
-}
-regulardialog = {
-
-}
-customdialog = {
-    815: ["Mexican Dude: Hola!", "A guy with a monocle: Have you ever gone hunting? It's quite a thrill!"],
-}
-buildingtypes = { # To reference building types
-    1: "Savy General Store", # Shop
-    2: "Inn", # Shop
-    3: "Blacksmith", # Shop
-    4: "Bus Stop", # Shop
-    5: "Train Station", # Shop
-    6: "Government Building", # Story
-    7: "Golf Course", # Job
-    8: "Fishery", # Job
-    9: "Port", # Job
-    10: "Factory", # Job
-    11: "Fish Processing Plant", # Job
-    12: "Old Coal Mine", # Story
-    13: "Bar", # Shop
-    14: "Town Square", # Story
-    15: "Mueseum", # Story
-    16: "Savy Headquarters", # Job
-}
-buildingfunctype = { # What type of function each building should have - True is shop, False is job, None is story (dialog)
-    1: True,
-    2: True,
-    3: True,
-    4: True,
-    5: True,
-    6: None,
-    7: False,
-    8: False,
-    9: False,
-    10: False,
-    11: False,
-    12: None,
-    13: True,
-    14: None,
-    15: None,
-    16: False,
-}
-buildingdesc = { # TODO: To reference building desc
-    1: "Savy General Store, a multiprovincial grocery chain.",
-    2: "Inn",
-    3: "Blacksmith",
-    4: "Bus Stop",
-    5: "Train Station",
-    6: "Government Building",
-    7: "Golf Course",
-    8: "Fishery",
-    9: "Port",
-    10: "Factory",
-    11: "Fish Processing Plant",
-    12: "Old Coal Mine",
-    13: "Bar",
-    14: "Town Square",
-    15: "Mueseum",
-    16: "Savy Headquarters",
-}
-townids = { # To reference town names
-    1: "Halifax",
-    2: "Sydney",
-    3: "Sandford",
-    4: "Clark's Harbor",
-    5: "Lunenburg",
-    6: "Wolfville",
-    7: "Annapolis Royal",
-    8: "Truro",
-    9: "Port Dufferin",
-    10: "New Glasgow",
-    11: "Port Hawkesbury",
-    12: "Inverness",
-    13: "Dingwall",
-}
-townnames = { # To reference town ids
-    "Halifax": 1,
-    "Sydney": 2,
-    "Sandford": 3,
-    "Clark's Harbor": 4,
-    "Lunenburg": 5,
-    "Wolfville": 6,
-    "Annapolis Royal": 7,
-    "Truro": 8,
-    "Port Dufferin": 9,
-    "New Glasgow": 10,
-    "Port Hawkesbury": 11,
-    "Inverness": 12,
-    "Dingwall": 13,
-}
-neighbors = { # Reference to what towns are next to which
-    1: [5, 6, 8, 9],
-    2: [11, 13],
-    3: [4, 7],
-    4: [3, 5],
-    5: [1, 4],
-    6: [1, 7],
-    7: [3, 6],
-    8: [1, 10],
-    9: [1, 11],
-    10: [8, 11],
-    11: [2, 9, 10, 12],
-    12: [11, 13],
-    13: [2, 12],
-}
-items = {
-    1: "Pocket Knife",
-    2: "Banana",
-}
+#           Beginning of main code
+#                      |
+#                      |
+#                      V
 
 print("\nWelcome to 'Adventure' by Maxim Zmudzinski.") # TODO: Extend description?
 
@@ -189,13 +84,13 @@ if ifsave == False: # Creating a new game
         t = input()
         if t == "1" or t == "easy" or t == "Easy" or t == "e": # Easy mode config
             d = 1
-            money = 60
+            money = 50
         elif t == "2" or t == "normal" or t == "Normal" or t == "n": # Normal mode config
             d = 2
-            money = 40
+            money = 20
         elif t == "3" or t == "hard" or t == "Hard" or t == "h": # Hard mode config
             d = 3
-            money = 20
+            money = 10
         elif t == "4" or t == "extreme" or t == "EXTREME" or t == "e":
             d = 9
             money = 0
@@ -310,24 +205,37 @@ while True: # All game commands
         print("Which building would you like to visit? (Please copy the town name exactly.)")
         buildings = townbuildings[location]
         for building in buildings:
-            print(buildingtypes[building])
+            if building != 14:
+                print(buildingtypes[building])
         moved = False
         while moved == False:
             cmd = input()
             for building in buildings:
-                if cmd == buildingtypes[building]:
+                if cmd == buildingtypes[building] and building != 14:
                     inside = building
                     moved = True
                     print("You have gone to the "+buildingtypes[building]+".")
             if moved == False:
                 print("Not a building name. Please copy it exactly.")
-    if cmd == "search" or cmd == "look":
+    if cmd == "search" or cmd == "look" or cmd == "chat" or cmd == "talk":
+        if buildingfunctype[inside] == None:
+            buildingis = Building(inside, location, buildingfunctype[inside])
+            buildingfunc(buildingis)
+        else:
+            print("The building you are in does not let you chat.")
+    if cmd == "work":
         buildingis = Building(inside, location, buildingfunctype[inside])
+        buildingfunc(buildingis)
+    if cmd == "shop":
+        buildingis = Building(inside, location, buildingfunctype[inside])
+        buildingfunc(buildingis)
     if cmd == "help" or cmd == "aaaaa" or cmd == "arghhhhhhh": # shows a list of what the commands do
-        print("Commands: (note - subject to change)")
+        print("Commands: (note - subject to (constant) change)")
         print("'move'      - lets you move from one town to another.")
         print("'location'  - tells you your current location.")
         print("'visit'     - lets you move to a building")
+        print("'chat'      - lets you talk to NPCs if in a building that isnt a shop or a job.")
+        print("'shop'      - opens the shop if it exists")
         print("'save'      - saves your game.")
         print("'balance'   - tells you how much money you have.")
         print("'beg'       - gives you $10.")
