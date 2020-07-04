@@ -38,7 +38,7 @@ def buildingfunc(buildingclassobj):
                 item = -1
             if item == None:
                 print("That is not an item. Please copy the name exactly.")
-            elif: item == False:
+            elif item == False:
                 print("You do not have enough money to afford that item.")
 
     if buildingclassobj.shop == False: # TODO: Jobs
@@ -214,11 +214,11 @@ while True: # All game commands
                 if cmd == buildingtypes[building] and building != 14:
                     inside = building
                     moved = True
-                    print("You have gone to the "+buildingtypes[building]+".")
+                    print("You have gone to the "+buildingdesc[building])
             if moved == False:
                 print("Not a building name. Please copy it exactly.")
     if cmd == "search" or cmd == "look" or cmd == "chat" or cmd == "talk":
-        if buildingfunctype[inside] == None:
+        if buildingfunctype[inside] == None and inside != 14:
             buildingis = Building(inside, location, buildingfunctype[inside])
             buildingfunc(buildingis)
         else:

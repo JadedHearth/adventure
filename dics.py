@@ -53,7 +53,7 @@ buildingtypes = { # To reference building types
     11: "Fish Processing Plant", # Job
     12: "Old Coal Mine", # Story
     13: "Bar", # Shop
-    14: "Town Square", # Story
+    14: "Town Square", # Default
     15: "Mueseum", # Story
     16: "Savy's Headquarters", # Job
 }
