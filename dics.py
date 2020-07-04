@@ -37,7 +37,7 @@ regulardialog = {
     13: "Bartenter: Want a drink? Just dont drink so much you get paralyzed!",
 }
 customdialog = {
-    815: ["Mueseum Director: We was very busy an hour ago - I think there was a party group.", "Partygoer: This Mueseum is boring - I should've left with the others."],
+    815: ["Mueseum Director: We was very busy an hour ago - I think there was an after-party group.", "Partygoer: This mueseum is boring - I should've left with the others."],
 }
 buildingtypes = { # To reference building types
     1: "Savy's General Store", # Shop
@@ -75,23 +75,23 @@ buildingfunctype = { # What type of function each building should have - True is
     15: None,
     16: False,
 }
-buildingdesc = { # TODO: To reference building desc
+buildingdesc = { # To reference building descriptions
     1: "Savy's General Store, a multiprovincial grocery chain.",
-    2: "Bed & Breakfast Inn",
-    3: "Metalworking Inc.",
+    2: "Bed & Breakfast Inn, a local inn owned by a local guy.",
+    3: "Metalworking Inc., a cross-provicial metalworking company.",
     4: "Bus Stop",
     5: "Train Station",
     6: "Government Building",
-    7: "Golf Course",
-    8: "Fishery",
-    9: "Port",
-    10: "Factory",
-    11: "Fish Processing Plant",
-    12: "Old Coal Mine",
-    13: "Bar",
-    14: "Town Square",
-    15: "Mueseum",
-    16: "Savy's Headquarters",
+    7: "Golf Course, which is filled with tourist golfers.",
+    8: "Fishery, where you see a 'hiring' flyer posted.",
+    9: "Port, which has many ships moving in and out regularly. You notice a 'work needed' sign as well.",
+    10: "Factory. There are tons of people working, but they can't seem to get the job done fast enough. Perhaps they need a hand?",
+    11: "Fish Processing Plant, where a bunch of people that look like sushi chefs are chopping fish.",
+    12: "Old Coal Mine, which looks like a huge, dark hole in the ground with rusty elevators leading down.",
+    13: "Bar, which is filled with people having a drink after a long day at work.",
+    14: "Town Square.",
+    15: "Mueseum, which has a sparse distribution of people looking at various paintings and sculptures.",
+    16: "Savy's Headquarters. You look up at the cold building and shiver with intimidation. They seem to be hiring though.",
 }
 townids = { # To reference town names
     1: "Halifax",
@@ -138,7 +138,7 @@ neighbors = { # Reference to what towns are next to which
     12: [11, 13],
     13: [2, 12],
 }
-items = {
+items = { # To reference what the names of the items are
     1: "Pocket Knife",
     2: "Banana",
     3: "Savy Soda",
@@ -154,7 +154,7 @@ items = {
     13: "Eggs",
     14: "Spices",
 }
-shopitems = {
+shopitems = { # To reference what each shop is selling
     1: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
     2: [],
     3: [],

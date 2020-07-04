@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# "adventue", a game made by Maxim Zmudzinski
+# "adventure", a game made by Maxim Zmudzinski
 
 import random, pickle
 from dics import *
@@ -155,7 +155,7 @@ while True: # All game commands
         print("Welcome to "+towndes[location])
     if cmd == "location": # Returns location
         print("You are in "+towndes[location])
-        print("You are standing in their "+buildingtypes[inside]+".")
+        print("You are standing in the "+buildingdesc[inside])
     if cmd == "exit" or cmd == "leave": # Stops the script
         print("Are you sure you want to leave the game? You will lose all your unsaved progress!")
         left = False
