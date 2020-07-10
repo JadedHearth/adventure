@@ -15,9 +15,9 @@ towndes = { # To reference town names
 }
 townbuildings = { # What buildings there are in each town
     1: [1, 2, 3, 4, 5, 6, 9, 13, 14, 15],
-    2: [1, 2, 3, 5, 8, 9, 10, 14],
+    2: [1, 2, 3, 5, 6, 8, 9, 10, 14],
     3: [1, 2, 8, 14],
-    4: [4, 8, 9, 14],
+    4: [4, 6, 8, 9, 14],
     5: [1, 2, 4, 8, 11, 14],
     6: [1, 2, 4, 13, 14, 15],
     7: [1, 2, 3, 4, 8, 9, 14, 15],
@@ -29,19 +29,25 @@ townbuildings = { # What buildings there are in each town
     13: [2, 8, 14, 15],
 }
 regulardialog = {
-    1: "Cashier: Welcome to Savy's! What would you like to purchase today?",
-    2: "Innkeeper: Whats going on! Welcome to the Bed & Breakfast Inn.",
-    3: "Blacksmith: Welcome to Metalworking Inc. We are right some good, I find!",
-    4: "Ticket Machine: Please insert $10 into the ticket machine.",
-    5: "Ticket Machine: Please insert $30 into the ticket machine.",
-    13: "Bartenter: Want a drink? Just dont drink so much you get paralyzed!",
+    1: ["Cashier: Welcome to Savy's! What would you like to purchase today?", "Cashier: What's going on! What would you like to purchase today?"],
+    2: ["Associate: What's going on! Need a guide? Well lemme call one up.", "Associate: Morning! My, you wake up early! Well, we can probably find a guide that is awake."],
+    3: ["Blacksmith: Welcome to Metalworking Inc. Our tools are right some good, I find!", "Blacksmith: What's going on! We sell a mulitude of right some good weapons for the aspiring adventurer such as yourself!"],
+    4: ["Ticket Machine: Please insert $30 into the ticket machine."],
+    5: ["Ticket Machine: Please insert $15 into the ticket machine."],
+    6: ["Receptionist: Welcome to the local branch of the Nova Scotian Provincial Government.", "Politictian: I hate politics. It's so borringg. But my bribes pay wel- I MEAN the government... yes.", "Someone's Uncle: Back in my day, we would just go out and bomb 'em!\nPolitictian: Have you been reading the alernate reality books again? Sigh.", "Politictian: Sometimes the things that get passed are so ridiculous, I almost think the world is a videogame or something. Ridiculous, right?"],
+    12: ["You look inside of the cave - it's all dark and dusty, making you expect a monster to jump out at any moment, like in those old horror movies."],
+    13: ["Bartenter: Want a drink? Just dont drink so much you get paralyzed!"],
+    14: ["This game was made by Maxim Zmudzinski. Also, you could only be reading the code to find this (;"],
+    15: ["You look around, and see many fairly rich looking people staring at paintings on walls. Looks boring.", "Art Admirer: Wow. C. Monet really outdid himself with this one!", "Kid: I wanna go home, this is boooorrring.\nMother: But look at the paintings! Aren't they beautiful?", "Tourist: Hey Jenna, wanna take a selfie with this one?", "'Jenna': Selfie time!",],
 }
 customdialog = {
+    106: ["Politictian: I can't belive they actually passed that bill. It's a disgrace to all uf us!", "Politictian: Finally! They passed the bill!"],
+    406: ["Politictian: Sometimes I wonder why on Earth they built a Government branch here. This place is in the middle of nowhere!", "Politictian: I better get back to fishing. I need lunch, right? I guess could just buy it from - what was it, Savy's?"],
     815: ["Mueseum Director: We was very busy an hour ago - I think there was an after-party group.", "Partygoer: This mueseum is boring - I should've left with the others."],
 }
 buildingtypes = { # To reference building types
     1: "Savy's General Store", # Shop
-    2: "Bed & Breakfast Inn", # Shop
+    2: "Trail Guide Association", # Shop
     3: "Metalworking Inc.", # Shop
     4: "Bus Stop", # Shop
     5: "Train Station", # Shop
@@ -138,6 +144,20 @@ neighbors = { # Reference to what towns are next to which
     12: [11, 13],
     13: [2, 12],
 }
+trainneighbors = { # Which towns are next to which, train edition
+    1: [8],
+    8: [1, 10],
+    10: [8, 11],
+    11: [10, 2],
+    2: [11],
+}
+busneighbors = { # Which towns are next to which, bus edition
+    7: [6],
+    6: [7, 1],
+    1: [6, 5],
+    5: [1, 4],
+    4: [5],
+}
 items = { # To reference what the names of the items are
     1: "Pocket Knife",
     2: "Banana",
@@ -153,15 +173,51 @@ items = { # To reference what the names of the items are
     12: "Cow Milk",
     13: "Eggs",
     14: "Spices",
+    15: "A night at the Inn",
+    16: "Bus Ticket",
+    17: "Train Ticket",
+    18: "Dagger",
+    19: "Iron Shortsword",
+    20: "Iron Longsword",
+    21: "Machete",
+    22: "Pistol",
+    23: "Rifle",
+    24: "Shotgun",
+    25: "Savy Beer",
+    26: "White Wine",
+    27: "Red Wine",
+    28: "Cocktail",
+    29: "Caesar Salad",
 }
+weapondmg = {
+    1: 1,
+    18: 2,
+    19: 3,
+    20: 4,
+    21: 5,
+    22: 6,
+    23: 7,
+    24: 8,
+}
+weapons = [18, 19, 20, 21, 22, 23, 24]
 shopitems = { # To reference what each shop is selling
     1: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
-    2: [],
-    3: [],
-    4: [],
-    5: [],
-    13: [],
+    2: [15],
+    3: [18, 19, 20, 21, 22, 23, 24],
+    4: [16],
+    5: [17],
+    13: [25, 26, 27, 28, 29],
 }
 prices = {
-    1: {2: 5, 3: 2, 4: 8, 5: 10, 6: 10, 7: 15, 8: 10, 9: 5, 10: 8, 11: 12, 12: 10, 13: 12, 14: 5,}
+    1: {2: 5, 3: 2, 4: 8, 5: 10, 6: 10, 7: 15, 8: 10, 9: 5, 10: 8, 11: 12, 12: 10, 13: 12, 14: 5},
+    2: {15: 20},
+    3: {18: 20, 19: 50, 20: 100, 21: 200, 22: 300, 23: 500, 24: 1000},
+    4: {16: 30},
+    5: {17: 15},
+    13: {25: 10, 26: 20, 27: 20, 28: 30, 29: 15},
+}
+bestmove = {
+    "sword": "shield",
+    "heal": "sword",
+    "shield": "heal",
 }
