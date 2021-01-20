@@ -1,35 +1,27 @@
 from tkinter import *
+from PIL import Image, ImageTk
 
-class IntroScreen(Frame):
+class App(Frame):
     def __init__(self, master):
         Frame.__init__(self, master)
-        self.grid()
-        self.title('Intro Screen')
-        self.create_widgets()
-        self.focus_force()
+        self.columnconfigure(0,weight=1)
+        self.rowconfigure(0,weight=1)
+        self.original = Image.open('map.png')
+        self.image = ImageTk.PhotoImage(self.original)
+        self.display = Canvas(self, bd=0, highlightthickness=0)
+        self.display.create_image(0, 0, image=self.image, anchor=NW, tags="IMG")
+        self.display.grid(row=0, sticky=W+E+N+S)
+        self.pack(fill=BOTH, expand=1)
+        self.bind("<Configure>", self.resize)
 
-    def create_widgets(self):
-        label = Label(self, text='Hello World!')
-        label.grid()
-
-        button = Button(self, text='Open Window', command=self.newWindow)
-        button.grid()
-
-    def newWindow(self):
-        self.toplevel = InfoWindow()
-
-#Like the frame, or any widget, this inherited from the parent widget
-class InfoWindow(Toplevel):
-    def __init__(self):
-        Toplevel.__init__(self)
-        self.grid()
-        self.create_widgets()
-        self.focus_force()
-
-    def create_widgets(self):
-        label = Label(self, text='This is a window!')
-        label.grid()
+    def resize(self, event):
+        size = (event.width, event.height)
+        resized = self.original.resize(size,Image.ANTIALIAS)
+        self.image = ImageTk.PhotoImage(resized)
+        self.display.delete("IMG")
+        self.display.create_image(0, 0, image=self.image, anchor=NW, tags="IMG")
 
 root = Tk()
-app = IntroScreen(root)
-root.mainloop()
+app = App(root)
+app.mainloop()
+root.destroy()

@@ -161,7 +161,7 @@ def fight(d, inventory):
         optimalmove = bestmove[opponentmove]
         print("Opponent: "+opponentmove)
         timeout = 3.5
-        threadtimer = Timer(timeout, print, ['Sorry, times up!'])
+        threadtimer = Timer(timeout, ['Sorry, times up!'])
         threadtimer.start()
         answer = input("You: ")
         if answer == optimalmove:
@@ -365,9 +365,9 @@ while True: # All game commands
         print("Commands: (note - subject to (constant) change)")
         print("'move'      - lets you move from one town to another.")
         print("'location'  - tells you your current location.")
-        print("'visit'     - lets you move to a building")
+        print("'visit'     - lets you move to a building.")
         print("'chat'      - lets you talk to NPCs if in a building that isnt a shop or a job.")
-        print("'shop'      - opens the shop if it exists")
+        print("'shop'      - opens the shop if it exists.")
         print("'save'      - saves your game.")
         print("'balance'   - tells you how much money you have.")
         print("'beg'       - gives you $10.")
